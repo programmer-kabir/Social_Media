@@ -1,15 +1,15 @@
 import React, { useContext, useState } from "react";
-import Input from "../../../Component/Input/Input";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
 
 import AuthProvider, { AuthContext } from "../../../Provider/AuthProvider";
+import useAuth from "../../../Component/Hooks/useAuth";
 const Register = () => {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
-  const { newRegister } = useContext(AuthContext);
+  const { newRegister } = useAuth();
   const {
     handleSubmit,
     control,
