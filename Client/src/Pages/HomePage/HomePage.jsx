@@ -5,8 +5,8 @@ import LeftSide from "../../Component/HomePage/LeftSide/LeftSide";
 
 const HomePage = () => {
   return (
-    <section className="bg-white w-full h-screen">
-      <Navbar />
+    <section className=" w-full h-screen">
+      {/* <Navbar /> */}
       <div className="flex h-full">
         {/* Left section */}
         <section className="w-1/4 mt-5">
