@@ -3,10 +3,11 @@ import { FaEye, FaEyeSlash } from "react-icons/fa";
 import { useForm } from "react-hook-form";
 import toast from "react-hot-toast";
 import { RxCross2 } from "react-icons/rx";
-
-import AuthProvider, { AuthContext } from "../../../Provider/AuthProvider";
 import useAuth from "../../../Component/Hooks/useAuth";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
 const Register = () => {
+  const navigate = useNavigate();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const { newRegister } = useAuth();
@@ -17,16 +18,34 @@ const Register = () => {
     formState: { errors, isSubmitted },
   } = useForm();
   const onSubmit = async (data) => {
+    const userData = {
+      FirstName: data.FirstName,
+      LastName: data.LastName,
+      FullName:data.FirstName+' '+data.LastName,
+      BirthDay: data.birthDay,
+      Email: data.email,
+      Password: data.password,
+    };
     if (data.password !== data.PasswordConfirmation) {
       toast.error("Password Not same");
-    }
-    // console.log(data);
-    newRegister(data.email, data.password)
-      .then((result) => {
+    }else{
+      newRegister(data.email, data.password).then((result) => {
         const user = result.user;
-        console.log(user);
-      })
-      .catch((error) => console.log(error));
+        // SendUserData(data)
+        axios
+          .post(`${import.meta.env.VITE_LOCALHOST_KEY}/users`, userData)
+          .then((data) => {
+            // console.log(data.data);
+            if (data.data.insertedId) {
+              toast.success("user create successfully");
+              navigate("/");
+            }
+          });
+      });
+      // .catch((error) => console.log(error));
+    }
+
+   
   };
   return (
     <section className="flex justify-center items-center py-10">

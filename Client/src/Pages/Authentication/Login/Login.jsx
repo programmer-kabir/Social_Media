@@ -1,12 +1,34 @@
-import { Link } from "react-router-dom";
-
-import { FcGoogle } from "react-icons/fc";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useState } from "react";
 import { FaEye, FaEyeSlash } from "react-icons/fa";
+import useAuth from "../../../Component/Hooks/useAuth";
+import { Controller, useForm } from "react-hook-form";
 
 const Login = () => {
+  const { singIn, loading, setLoading } = useAuth();
+  const location = useLocation();
+  const navigate = useNavigate();
+  const from = location.state?.from?.pathname || "/";
   const [showPassword, setShowPassword] = useState(false);
-
+  const {
+    handleSubmit,
+    control,
+    register,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = (data) => {
+    console.log(data);
+    singIn(data.email, data.password)
+      .then((result) => {
+        const loggedUser = result.user;
+        navigate(from, { replace: true });
+        setLoading(false);
+      })
+      .catch((err) => {
+        setLoading(false);
+        console.log(err.message);
+      });
+  };
   return (
     <div className="flex justify-center items-center  pt-12">
       <div className="flex flex-col max-w-md p-6 rounded-md sm:p-10 bg-gray-100 text-gray-900">
@@ -18,6 +40,7 @@ const Login = () => {
         </div>
         <form
           noValidate=""
+          onSubmit={handleSubmit(onSubmit)}
           action=""
           className="space-y-6 ng-untouched ng-pristine ng-valid"
         >
@@ -29,7 +52,7 @@ const Login = () => {
               <input
                 type="text"
                 id="email"
-                // {...register("email", { required: true })}
+                {...register("email", { required: true })}
                 placeholder="Mobile number or email address"
                 className="peer bg-[#E8F0FE] outline-none  h-8 w-full border-none  p-0 placeholder-transparent focus:border-transparent  sm:text-sm"
               />
@@ -48,6 +71,7 @@ const Login = () => {
                   type={showPassword ? "text" : "password"}
                   id="password"
                   placeholder="password"
+                  {...register("password", { required: true })}
                   className="peer bg-[#E8F0FE] h-8 w-full border-none  p-0 placeholder-transparent outline-none sm:text-sm"
                 />
 
@@ -87,7 +111,7 @@ const Login = () => {
         <p className="px-6 pt-5 text-sm text-center text-gray-400">
           Don't have an account yet?{" "}
           <Link
-            to="/signup"
+            to="/sing-up"
             className="hover:underline font-medium text-blue-600"
           >
             Sign up

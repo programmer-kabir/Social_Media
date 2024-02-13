@@ -2,8 +2,10 @@ import React from "react";
 import Navbar from "../SharePages/Navbar/Navbar";
 import StoryCard from "../../Component/HomePage/StoryCard/StoryCard";
 import LeftSide from "../../Component/HomePage/LeftSide/LeftSide";
+import useAuth from "../../Component/Hooks/useAuth";
 
 const HomePage = () => {
+  const {user} = useAuth()
   return (
     <section className=" w-full h-screen">
       {/* <Navbar /> */}

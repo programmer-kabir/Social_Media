@@ -1,7 +1,14 @@
-import React from "react";
+import React, { useState } from "react";
 import Content from "../../../Component/Design/Content";
 import { Link } from "react-router-dom";
+import { FaUserCircle } from "react-icons/fa";
+import useUser from "../../../Component/Hooks/useUser";
+import useAuth from "../../../Component/Hooks/useAuth";
 const Navbar = () => {
+  const [users] = useUser();
+  const { user } = useAuth();
+  const currentEmail = user?.email;
+  const userData = users.find((user) => user.Email === currentEmail);
   return (
     <section className="w-full shadow py-2">
       <Content>
@@ -18,15 +25,15 @@ const Navbar = () => {
           <div>
             <div className="flex gap-2 px-1 items-center ">
               <Link>
-                <img
-                  className="rounded-full w-10 h-10 bg-cover"
-                  src="https://i.ibb.co/n1XNL6c/Whats-App-Image-2024-01-19-at-18-05-45-d402cd5b.jpg"
-                  alt=""
-                />
+                {userData?.image ? (
+                  "ace"
+                ) : (
+                  <FaUserCircle className="rounded-full w-10 h-10"/>
+                )}
               </Link>
               <div className="flex flex-col pr-5">
                 <Link>
-                  <p className="font-medium text-base">MD KABIR AHMED</p>
+                  <p className="font-medium text-base">{userData?.FullName}</p>
                 </Link>
                 <p className="text-base text-gray-500">username</p>
               </div>
