@@ -24,7 +24,7 @@ const Navbar = () => {
           {/* Right Side */}
           <div>
             <div className="flex gap-2 px-1 items-center ">
-              <Link>
+              <Link to={`/profile/${userData?._id}`}>
                 {userData?.image ? (
                   "ace"
                 ) : (

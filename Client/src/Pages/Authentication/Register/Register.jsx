@@ -17,36 +17,37 @@ const Register = () => {
     register,
     formState: { errors, isSubmitted },
   } = useForm();
-  const onSubmit = async (data) => {
+  const onSubmit = async (data) => {   
     const userData = {
       FirstName: data.FirstName,
       LastName: data.LastName,
-      FullName:data.FirstName+' '+data.LastName,
+      FullName: data.FirstName + " " + data.LastName,
       BirthDay: data.birthDay,
       Email: data.email,
       Password: data.password,
     };
+  
     if (data.password !== data.PasswordConfirmation) {
       toast.error("Password Not same");
-    }else{
-      newRegister(data.email, data.password).then((result) => {
-        const user = result.user;
-        // SendUserData(data)
-        axios
-          .post(`${import.meta.env.VITE_LOCALHOST_KEY}/users`, userData)
-          .then((data) => {
-            // console.log(data.data);
-            if (data.data.insertedId) {
-              toast.success("user create successfully");
-              navigate("/");
-            }
-          });
-      });
-      // .catch((error) => console.log(error));
+    } else {
+      newRegister(data.email, data.password)
+        .then((result) => {
+          const user = result.user;
+          // SendUserData(data)
+          axios
+            .post(`${import.meta.env.VITE_LOCALHOST_KEY}/users`, userData)
+            .then((response) => {
+              if (response.data.insertedId) {
+                toast.success("User created successfully");
+                navigate("/");
+              }
+            })
+            .catch((error) => console.log(error));
+        })
+        .catch((error) => console.log(error));
     }
-
-   
   };
+  
   return (
     <section className="flex justify-center items-center py-10">
       <div className="flex flex-col max-w-md p-4 rounded-md  bg-gray-100 text-gray-900">
@@ -181,6 +182,26 @@ const Register = () => {
                 </span>
               </label>
             </div>
+            {/* <div className="flex gap-5 ">
+              <div className="w-full">
+                <label
+                  htmlFor="userName"
+                  className="relative bg-[#E8F0FE] block overflow-hidden rounded-md border border-gray-300 px-3 pt-3 "
+                >
+                  <input
+                    type="text"
+                    id="userName"
+                    {...register("userName", { required: true })}
+                    placeholder="User Name"
+                    className="peer h-8 w-full border-none bg-transparent p-0 placeholder-transparent focus:border-transparent focus:outline-none focus:ring-0 sm:text-sm"
+                  />
+
+                  <span className="absolute font-medium start-3 top-3 -translate-y-1/2 text-xs text-gray-700 transition-all peer-placeholder-shown:top-1/2 peer-placeholder-shown:text-sm peer-focus:top-3 peer-focus:text-xs">
+                    First Name <span className="text-red-500">*</span>
+                  </span>
+                </label>
+              </div>
+            </div> */}
             {/* Date of Birth */}
             <div>
               <div className="w-full">
